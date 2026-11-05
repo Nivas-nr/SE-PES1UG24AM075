@@ -1,0 +1,43 @@
+test_all_remaining_units_can_be_dispensed (test_pharmacy_system.PharmacyTests.test_all_remaining_units_can_be_dispensed) ... ok
+test_allergy_catches_name_variants (test_pharmacy_system.PharmacyTests.test_allergy_catches_name_variants) ... ok
+test_allergy_does_not_block_shorter_name (test_pharmacy_system.PharmacyTests.test_allergy_does_not_block_shorter_name) ... ok
+test_allergy_ignores_case (test_pharmacy_system.PharmacyTests.test_allergy_ignores_case) ... ok
+test_batch_log_records_units_added_not_total (test_pharmacy_system.PharmacyTests.test_batch_log_records_units_added_not_total) ... ok
+test_corrupt_stock_file_is_reported (test_pharmacy_system.PharmacyTests.test_corrupt_stock_file_is_reported) ... ok
+test_default_batch_log_is_not_shared (test_pharmacy_system.PharmacyTests.test_default_batch_log_is_not_shared) ... ok
+test_drug_name_ignores_case (test_pharmacy_system.PharmacyTests.test_drug_name_ignores_case) ... ok
+test_drug_usable_on_expiry_day (test_pharmacy_system.PharmacyTests.test_drug_usable_on_expiry_day) ... ok
+test_exact_name_is_found (test_pharmacy_system.PharmacyTests.test_exact_name_is_found) ... ok
+test_expired_drug_refused (test_pharmacy_system.PharmacyTests.test_expired_drug_refused) ... ok
+test_expiry_lists_use_correct_boundaries (test_pharmacy_system.PharmacyTests.test_expiry_lists_use_correct_boundaries) ... ok
+test_export_writes_prescriptions (test_pharmacy_system.PharmacyTests.test_export_writes_prescriptions) ... ok
+test_injection_input_finds_nobody (test_pharmacy_system.PharmacyTests.test_injection_input_finds_nobody) ... ok
+test_invalid_expiry_rejected (test_pharmacy_system.PharmacyTests.test_invalid_expiry_rejected) ... ok
+test_invalid_quantities_refused (test_pharmacy_system.PharmacyTests.test_invalid_quantities_refused) ... ok
+test_invalid_units_rejected (test_pharmacy_system.PharmacyTests.test_invalid_units_rejected) ... ok
+test_load_updates_the_same_stock_dictionary (test_pharmacy_system.PharmacyTests.test_load_updates_the_same_stock_dictionary) ... ok
+test_missing_stock_file_keeps_stock (test_pharmacy_system.PharmacyTests.test_missing_stock_file_keeps_stock) ... ok
+test_name_with_apostrophe_is_safe (test_pharmacy_system.PharmacyTests.test_name_with_apostrophe_is_safe) ... ok
+test_none_marker_blocks_nothing (test_pharmacy_system.PharmacyTests.test_none_marker_blocks_nothing) ... ok
+test_restock_adds_units_and_keeps_earlier_expiry (test_pharmacy_system.PharmacyTests.test_restock_adds_units_and_keeps_earlier_expiry) ... ok
+test_successful_dispense_updates_state (test_pharmacy_system.PharmacyTests.test_successful_dispense_updates_state) ... ok
+test_too_many_units_refused (test_pharmacy_system.PharmacyTests.test_too_many_units_refused) ... ok
+test_unknown_drug_refused (test_pharmacy_system.PharmacyTests.test_unknown_drug_refused) ... ok
+test_unknown_patient_refused (test_pharmacy_system.PharmacyTests.test_unknown_patient_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 0.061s
+
+OK
+Allergy warning for Kavya
+Allergy warning for Kavya
+Allergy warning for Kavya
+Allergy warning for Kavya
+Cannot dispense Paracetamol: expired on 2026-11-04
+Cannot dispense Paracetamol: invalid quantity 0
+Cannot dispense Paracetamol: invalid quantity -1
+Cannot dispense Paracetamol: invalid quantity 1.5
+No stock file found at C:\Users\Krish\AppData\Local\Temp\tmpx__w4a3_\missing.json
+Cannot dispense Paracetamol: only 10 units available
+Cannot dispense Unknown: not in stock
+Unknown patient: Ghost

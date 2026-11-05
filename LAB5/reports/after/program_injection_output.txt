@@ -1,0 +1,19 @@
+No stock file found at stock.json
+Stock rejected: Units must be a positive whole number: -15
+Cannot dispense Amoxicillin: expired on 2025-12-31
+Arjun gets Amoxicillin: False
+Allergy warning for Kavya
+Kavya gets Penicillin: False
+Allergy warning for Meena
+Meena gets ibuprofen: False
+Unknown patient: Ghost
+Unknown patient: False
+Arjun gets Paracetamol: True
+Patient name to look up (Enter for Arjun): Lookup result: []
+Expiring within 30 days: ['Ibuprofen']
+Already expired: ['Amoxicillin']
+Pharmacy Stock
+Paracetamol -> 95 units, expires 2027-03-01
+Amoxicillin -> 20 units, expires 2025-12-31
+Penicillin -> 50 units, expires 2027-01-15
+Ibuprofen -> 15 units, expires 2026-11-30
