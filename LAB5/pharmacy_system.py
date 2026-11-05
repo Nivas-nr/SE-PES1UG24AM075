@@ -1,12 +1,12 @@
 import json
 import sqlite3
-import os
 from datetime import datetime
 
 # Global state
 conn = sqlite3.connect(":memory:")
 stock = {}
 prescriptions = []
+
 
 def setup_database():
     cur = conn.cursor()
@@ -16,15 +16,19 @@ def setup_database():
     cur.execute("INSERT INTO patients VALUES ('P3', 'Meena', 'ibuprofen')")
     conn.commit()
 
+
 def find_patient(name):
     cur = conn.cursor()
     query = "SELECT id, allergy FROM patients WHERE name = ?"
     return cur.execute(query, (name,)).fetchall()
 
+
 def add_stock(drug, units, expiry, batch_log=[]):
-    stock[drug] = {"units": stock.get(drug, {}).get("units", 0) + units, "expiry": expiry}
+    current_units = stock.get(drug, {}).get("units", 0)
+    stock[drug] = {"units": current_units + units, "expiry": expiry}
     batch_log.append((drug, units))
     return len(batch_log)
+
 
 def dispense(patient_name, drug, units):
     try:
@@ -33,10 +37,16 @@ def dispense(patient_name, drug, units):
             print("Allergy warning for", patient_name)
             return False
         stock[drug]["units"] -= units
-        prescriptions.append({"patient": patient[0], "drug": drug, "units": units, "time": str(datetime.now())})
+        prescriptions.append({
+            "patient": patient[0],
+            "drug": drug,
+            "units": units,
+            "time": str(datetime.now()),
+        })
         return True
-    except:
+    except (IndexError, KeyError):
         return False
+
 
 def expiring_soon(days=30):
     soon = []
@@ -46,10 +56,12 @@ def expiring_soon(days=30):
             soon.append(d)
     return soon
 
+
 def export_prescriptions(file="prescriptions.json"):
     f = open(file, "w")
     f.write(json.dumps(prescriptions))
     f.close()
+
 
 def load_stock(file="stock.json"):
     global stock
@@ -58,10 +70,12 @@ def load_stock(file="stock.json"):
     except FileNotFoundError:
         print("No stock file found at", file)
 
+
 def printStock():
     print("Pharmacy Stock")
     for d in stock:
         print(d, "->", stock[d]["units"], "units, expires", stock[d]["expiry"])
+
 
 def main():
     setup_database()
@@ -79,5 +93,6 @@ def main():
     print("Expiring within 30 days:", expiring_soon())
     export_prescriptions()
     printStock()
+
 
 main()
