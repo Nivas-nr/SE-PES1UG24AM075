@@ -1,3 +1,5 @@
+"""Track pharmacy stock, patient allergies and dispensed prescriptions."""
+
 import json
 import sqlite3
 from datetime import datetime
@@ -9,6 +11,7 @@ prescriptions = []
 
 
 def setup_database():
+    """Create the patients table and fill it with sample patients."""
     cur = conn.cursor()
     cur.execute("CREATE TABLE patients (id TEXT, name TEXT, allergy TEXT)")
     cur.execute("INSERT INTO patients VALUES ('P1', 'Kavya', 'penicillin')")
@@ -18,12 +21,16 @@ def setup_database():
 
 
 def find_patient(name):
+    """Return (id, allergy) rows for patients with exactly this name."""
     cur = conn.cursor()
     query = "SELECT id, allergy FROM patients WHERE name = ?"
     return cur.execute(query, (name,)).fetchall()
 
 
-def add_stock(drug, units, expiry, batch_log=[]):
+def add_stock(drug, units, expiry, batch_log=None):
+    """Add units of a drug and return the number of entries in batch_log."""
+    if batch_log is None:
+        batch_log = []
     current_units = stock.get(drug, {}).get("units", 0)
     stock[drug] = {"units": current_units + units, "expiry": expiry}
     batch_log.append((drug, units))
@@ -31,6 +38,7 @@ def add_stock(drug, units, expiry, batch_log=[]):
 
 
 def dispense(patient_name, drug, units):
+    """Dispense a drug to a patient and return whether it succeeded."""
     try:
         patient = find_patient(patient_name)[0]
         if drug in patient[1]:
@@ -49,35 +57,42 @@ def dispense(patient_name, drug, units):
 
 
 def expiring_soon(days=30):
+    """Return the drugs that expire within the given number of days."""
     soon = []
-    for d in stock:
-        exp = datetime.strptime(stock[d]["expiry"], "%Y-%m-%d")
+    for drug, item in stock.items():
+        exp = datetime.strptime(item["expiry"], "%Y-%m-%d")
         if (exp - datetime.now()).days < days:
-            soon.append(d)
+            soon.append(drug)
     return soon
 
 
 def export_prescriptions(file="prescriptions.json"):
-    f = open(file, "w")
-    f.write(json.dumps(prescriptions))
-    f.close()
+    """Write all dispensed prescriptions to a JSON file."""
+    with open(file, "w", encoding="utf-8") as output:
+        json.dump(prescriptions, output)
 
 
 def load_stock(file="stock.json"):
-    global stock
+    """Replace the current stock with a JSON file's contents, if it exists."""
     try:
-        stock = json.load(open(file))
+        with open(file, encoding="utf-8") as source:
+            loaded = json.load(source)
     except FileNotFoundError:
         print("No stock file found at", file)
+        return
+    stock.clear()
+    stock.update(loaded)
 
 
-def printStock():
+def print_stock():
+    """Print every drug with its units and expiry date."""
     print("Pharmacy Stock")
-    for d in stock:
-        print(d, "->", stock[d]["units"], "units, expires", stock[d]["expiry"])
+    for drug, item in stock.items():
+        print(drug, "->", item["units"], "units, expires", item["expiry"])
 
 
 def main():
+    """Run a short demonstration of the stock and dispensing features."""
     setup_database()
     load_stock()
     add_stock("Paracetamol", 100, "2027-03-01")
@@ -92,7 +107,7 @@ def main():
     print("Lookup result:", find_patient(name))
     print("Expiring within 30 days:", expiring_soon())
     export_prescriptions()
-    printStock()
+    print_stock()
 
 
 main()
