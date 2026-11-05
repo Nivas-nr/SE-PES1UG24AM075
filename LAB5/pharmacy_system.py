@@ -18,8 +18,8 @@ def setup_database():
 
 def find_patient(name):
     cur = conn.cursor()
-    query = "SELECT id, allergy FROM patients WHERE name = '%s'" % name
-    return cur.execute(query).fetchall()
+    query = "SELECT id, allergy FROM patients WHERE name = ?"
+    return cur.execute(query, (name,)).fetchall()
 
 def add_stock(drug, units, expiry, batch_log=[]):
     stock[drug] = {"units": stock.get(drug, {}).get("units", 0) + units, "expiry": expiry}
@@ -55,8 +55,8 @@ def load_stock(file="stock.json"):
     global stock
     try:
         stock = json.load(open(file))
-    except:
-        pass
+    except FileNotFoundError:
+        print("No stock file found at", file)
 
 def printStock():
     print("Pharmacy Stock")
